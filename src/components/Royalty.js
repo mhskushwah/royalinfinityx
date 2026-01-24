@@ -19,7 +19,8 @@ const levelNames = [
 
 const Flashout = () => {
   const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
- 
+  const [isButtonActive, setIsButtonActive] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [royalties, setRoyalties] = useState(
     new Array(10).fill({ today: "0", yesterday: "0" })
   );
@@ -47,6 +48,7 @@ const Flashout = () => {
     const resetTime = getTodayResetTime();
 
     if (!lastClaim || new Date(lastClaim) < resetTime) {
+      setIsButtonActive(true);
     }
 
     const updateTimer = () => {
@@ -59,6 +61,7 @@ const Flashout = () => {
 
       const refreshed = localStorage.getItem('lastClaimTime');
       if (!refreshed || new Date(refreshed) < getTodayResetTime()) {
+        setIsButtonActive(true);
       }
     };
 
@@ -102,6 +105,30 @@ useEffect(() => {
 
 
 
+  // 👉 Smart contract call
+  const handleClaimRoyalty = async () => {
+    try {
+      if (!window.ethereum) return alert('Please install MetaMask!');
+      setLoading(true);
+
+      const provider = new BrowserProvider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new formatEther.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
+      const royaltyId = 0; // 👈 Change as needed
+      const tx = await contract.claimRoyalty(royaltyId);
+      await tx.wait();
+
+      localStorage.setItem('lastClaimTime', new Date().toISOString());
+      setIsButtonActive(false);
+      alert('Royalty claimed successfully!');
+    } catch (err) {
+      console.error(err);
+      alert('Transaction failed!');
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
 
@@ -346,5 +373,32 @@ To create a production bundle, use `npm run build` or `yarn build`.
 }
 
 
+const styles = {
+  container: {
+    textAlign: "center",
+    marginTop: "50px",
+    padding: "20px",
+    background: "#f0f9ff",
+    borderRadius: "15px",
+    boxShadow: "0 0 15px rgba(0,0,0,0.1)",
+    maxWidth: "500px",
+    margin: "50px auto"
+  },
+  title: {
+    color: "#2c3e50",
+    marginBottom: "30px"
+  },
+  button: {
+    padding: "15px 30px",
+    fontSize: "18px",
+    backgroundColor: "#27ae60",
+    color: "white",
+    border: "none",
+    borderRadius: "10px",
+    cursor: "pointer",
+    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
+    transition: "0.3s ease"
+  }
+};
 
 export default Flashout;
