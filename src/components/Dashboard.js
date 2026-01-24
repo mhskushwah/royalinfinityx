@@ -8,6 +8,7 @@ import DayIncomeList from "../components/DayIncomeList";
 
 
 
+/* global BigInt */
 
 const LEVELS = [
   "0.004", "0.006", "0.012", "0.024", "0.048", "0.096", "0.192",
@@ -29,6 +30,7 @@ const Dashboard = () => {
     const [referrerId, setReferrerId] = useState(0);
     const [startTime, setStartTime] = useState(0);
     const [rank, setRank] = useState(0);
+    const [isRegistered, setIsRegistered] = useState(false);
     const [lostIncome, setlostIncome] = useState(0);
     const [royaltyIncome, setroyaltyIncome] = useState(0);
 
@@ -43,9 +45,11 @@ const Dashboard = () => {
     const [ref, setRef] = useState(0); // Referral ID from URL
     const [copied, setCopied] = useState(false); // ✅ Copy Notification
     const [showRegisterPopup, setShowRegisterPopup] = useState(false);
+    const [registrationOpen, setRegistrationOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [selectedLevels, setSelectedLevels] = useState([]);
     const [searchParams] = useSearchParams(); // URL से referral ID निकालने के लिए
+    const [userData, setUserData] = useState(null);
 
 
     useEffect(() => {
@@ -87,6 +91,7 @@ const Dashboard = () => {
           } else {
               setWalletAddress("");
               setWalletBalance("0");
+              setIsRegistered(false); // Reset user data when wallet is disconnected
           }
       };
 
@@ -100,6 +105,7 @@ const Dashboard = () => {
           }
       };
   }, []);
+
   // Get referral ID from URL
   useEffect(() => {
       const refIdFromUrl = searchParams.get("ref");
@@ -142,6 +148,7 @@ const Dashboard = () => {
             const userId = await contract.id(wallet);
             setUserId(userId.toString());
             if (userId > 0) {
+                setIsRegistered(true);
                 const userData = await contract.userInfo(userId);
                 const userData1 = await contract.incomeInfo(userId);
 
@@ -163,6 +170,8 @@ const Dashboard = () => {
                 const formattedIncome = incomeArray.map(value => value.toString());
                 setIncome(formattedIncome);
             } else {
+                setIsRegistered(false);
+                setRegistrationOpen(true);   // <-- Yeh add kar de
 
             }
         } catch (error) {
@@ -175,7 +184,9 @@ const Dashboard = () => {
           if (accounts.length === 0) {
               // No wallet connected → Logout user
               setWalletAddress("");
+              setIsRegistered(false);
               setUserId(null);
+              setUserData(null);
               alert("Wallet disconnected! Please connect again.");
           } else {
               // 🟢 New wallet connected → Load everything
@@ -212,6 +223,7 @@ const Dashboard = () => {
 
         console.log("👤 Full User Info:", user);
         setUserId(Number(userId));
+        setUserData(user);  // You can use this to store and display user info
     } catch (error) {
         console.error("❌ Error fetching user details:", error);
     }
@@ -239,10 +251,12 @@ const Dashboard = () => {
           console.log("User ID:", Number(userId));
 
           if (Number(userId) > 0) {
+              setIsRegistered(true);
               setShowRegisterPopup(false);
               return true;
           }
 
+          setIsRegistered(false);
 
           // ✅ Get Referral ID
           const urlParams = new URLSearchParams(window.location.search);
@@ -312,6 +326,7 @@ const Dashboard = () => {
           await tx.wait();
           alert("✅ Registration Successful!");
           await fetchUserDetails(wallet);
+          setIsRegistered(true);
           setShowRegisterPopup(false);
       } catch (err) {
           console.error("❌ Registration failed:", err);
