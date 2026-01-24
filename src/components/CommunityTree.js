@@ -341,10 +341,12 @@ Learn how to configure a non-root public URL by running `npm run build`.
     <div className="App">
       <img
         src="assets/communitytree_files/bgimg.png"
+          alt="background"
         className="fixed hidden md:block right-0 h-full w-full top-0 z-0"
       />
       <img
         src="assets/communitytree_files/bgmobimg.png"
+          alt="mobile background"
         className="fixed h-full w-full left-0 md:top-0 block md:hidden top-0 z-0"
       />
 
