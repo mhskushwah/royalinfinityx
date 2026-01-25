@@ -15,6 +15,7 @@ const levelNames = [
   "ROYAL",
   "INFINITY"
 ];
+const royaltyLevels = [2,3,4,5,6,7,8,9,10,11];
 
 
 const Flashout = () => {
@@ -132,30 +133,27 @@ useEffect(() => {
 
 
   // 🔹 CLAIM (din me sirf 1 baar)
-  const handleClaimRoyalty = async () => {
-    try {
-      if (!window.ethereum) return alert("Please install MetaMask!");
-      setLoading(true);
+ const handleClaimRoyalty = async (royaltyId) => {
+  try {
+    if (!window.ethereum) return alert("Please install MetaMask!");
+    setLoading(true);
 
-      const provider = new BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+    const provider = new BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-      const royaltyId = 0; // jis level ka claim chahiye
-      const tx = await contract.claimRoyalty(royaltyId);
-      await tx.wait();
+    const tx = await contract.claimRoyalty(royaltyId); // 👈 index (0–9)
+    await tx.wait();
 
-      localStorage.setItem("lastClaimTime", new Date().toISOString());
-      setIsButtonActive(false);
+    alert(`Royalty Level ${royaltyLevels[royaltyId]} claimed successfully!`);
 
-      alert("Royalty claimed successfully!");
-    } catch (err) {
-      console.error(err);
-      alert("Not eligible / Missed day / Failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Not eligible / Missed day / Already claimed / Failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
 
  
@@ -346,78 +344,33 @@ Learn how to configure a non-root public URL by running `npm run build`.
             </div>
 
         </div>
-
-
-
-        <div className="bg-gradient-to-r from-yellow-500 via-green-500 to-blue-500 rounded-lg p-6 shadow-lg mb-8">
-            <div className="flex justify-center">
-                   <button
-    disabled={!isButtonActive || loading}
-    onClick={handleClaimRoyalty}
-    className={`
-      relative px-32 py-8 rounded-full font-extrabold text-4xl tracking-widest
-      transition-all duration-300 border-4 overflow-hidden
-
-      ${isButtonActive
-        ? `
-          bg-yellow-400 
-          text-black 
-          border-yellow-500
-
-          shadow-[0_0_25px_rgba(255,215,0,0.8),0_0_60px_rgba(255,215,0,0.9)]
-          animate-pulse
-
-          hover:bg-yellow-500
-          hover:shadow-[0_0_40px_rgba(255,215,0,1),0_0_80px_rgba(255,215,0,1)]
-          hover:scale-110
-
-          active:scale-95
-        `
-        : `
-          bg-gray-300 
-          text-gray-600
-          border-gray-400
-          cursor-not-allowed
-          shadow-none
-        `}
-    `}
-  >
-    {/* Shine Layer */}
-    {isButtonActive && (
-      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shine_2s_linear_infinite]" />
-    )}
-
-    <span className="relative z-10">
-      {loading
-        ? "CLAIMING..."
-        : isButtonActive
-        ? "CLAIM ROYALTY"
-        : "CLAIM LOCKED"}
-    </span>
-  </button>
-            </div>
-            <div className="text-center mt-4">
-                
-            </div>
-
-        </div>
-
         
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+
+
+
+
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
   {levelNames.map((level, index) => (
     <div
       key={index}
       className="bg-gray-800 bg-opacity-50 p-6 rounded-lg shadow-lg flex flex-col justify-between"
     >
-      <h4 className="text-lg font-bold text-yellow-400 mb-2 text-center">
-        {level}
+      {/* LEVEL TITLE */}
+      <h4 className="text-lg font-bold text-yellow-400 mb-3 text-center">
+        ⭐ {level}
       </h4>
-      <div className="bg-gray-700 bg-opacity-60 p-2 rounded-md text-center">
+
+      {/* USERS */}
+      <div className="bg-gray-700 bg-opacity-60 p-3 rounded-md text-center mb-4">
         <p className="text-white text-sm font-semibold">Total Users</p>
-        <span className="text-xl font-bold text-white">👥 {eligibleUsers[index] || 0}</span>
-       
+        <span className="text-xl font-bold text-white">
+          👥 {eligibleUsers[index] || 0}
+        </span>
       </div>
-      <div className="mt-4">
+
+      {/* ROYALTY DATA */}
+       <div className="mt-4">
         <p className="text-sm text-gray-300 text-center">Today</p>
         <p className="text-lg font-bold text-center text-yellow-400">
           {parseFloat(royalties[index]?.today || "0").toFixed(4)} BNB
@@ -428,10 +381,41 @@ Learn how to configure a non-root public URL by running `npm run build`.
         </p>
       </div>
 
-     
+      {/* CLAIM BUTTON PER LEVEL */}
+      <div className="flex justify-center mt-2">
+        <button
+          disabled={loading || eligibleUsers[index] === 0}
+          onClick={() => handleClaimRoyalty(index)}
+          className={`
+            px-6 py-3 rounded-xl font-bold text-lg transition-all duration-300
+
+            ${eligibleUsers[index] > 0
+              ? `
+                bg-yellow-400 text-black
+                hover:bg-yellow-500 hover:scale-105
+                shadow-[0_0_20px_rgba(255,215,0,0.8)]
+              `
+              : `
+                bg-gray-600 text-gray-400
+                cursor-not-allowed
+                shadow-none
+              `}
+          `}
+        >
+          {eligibleUsers[index] > 0
+            ? `💰 Claim `
+            : `🔒 Locked`}
+        </button>
+      </div>
+
     </div>
   ))}
 </div>
+
+
+
+
+
           </div>
         </div>
       </div>
