@@ -24,6 +24,8 @@ const Flashout = () => {
   const [royalties, setRoyalties] = useState(
     new Array(10).fill({ today: "0", yesterday: "0" })
   );
+  const [eligibleUsers, setEligibleUsers] = useState([]);
+
 
 
 
@@ -79,26 +81,45 @@ const Flashout = () => {
 useEffect(() => {
   const fetchAllRoyalty = async () => {
     try {
+      if (!window.ethereum) return;
+
       const provider = new BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
       const currentDay = await contract.getCurRoyaltyDay();
 
-      const updated = await Promise.all(
-        Array.from({ length: 10 }, async (_, i) => {
-          const level = 0 + i;
-          const today = await contract.royalty(currentDay, level);
-          const yesterday = await contract.royalty(currentDay - 1n, level);
-          console.log(`Level ${level}: Today = ${formatEther(today)}, Yesterday = ${formatEther(yesterday)}`);
-          return {
-            today: formatEther(today),
-            yesterday: formatEther(yesterday)
-          };
-        })
-      );
+      const updated = [];
+      const usersArr = [];
+
+      for (let i = 0; i < 10; i++) {
+        const level = i;
+
+        // 🔹 Today & Yesterday royalty
+        const today = await contract.royalty(currentDay, level);
+        const yesterday =
+          currentDay > 0
+            ? await contract.royalty(currentDay - 1n, level)
+            : 0n;
+
+        // 🔹 Eligible users count
+        const users = await contract.royaltyUsers(level);
+
+        console.log(
+          `Level ${level}: Users=${users.toString()}, Today=${formatEther(today)}, Yesterday=${formatEther(yesterday)}`
+        );
+
+        updated.push({
+          today: formatEther(today),
+          yesterday: formatEther(yesterday)
+        });
+
+        usersArr.push(users.toString());
+      }
 
       setRoyalties(updated);
+      setEligibleUsers(usersArr);
+
     } catch (err) {
       console.error("Error fetching royalty:", err);
     }
@@ -106,6 +127,7 @@ useEffect(() => {
 
   fetchAllRoyalty();
 }, []);
+
 
 
 
@@ -329,22 +351,26 @@ Learn how to configure a non-root public URL by running `npm run build`.
 
         <div className="bg-gradient-to-r from-yellow-500 via-green-500 to-blue-500 rounded-lg p-6 shadow-lg mb-8">
             <div className="flex justify-center">
-                 <button
+                   <button
     disabled={!isButtonActive || loading}
     onClick={handleClaimRoyalty}
     className={`
-      px-28 py-7 rounded-3xl font-extrabold text-3xl tracking-wide
-      transition-all duration-300 border-4
+      relative px-32 py-8 rounded-full font-extrabold text-4xl tracking-widest
+      transition-all duration-300 border-4 overflow-hidden
 
       ${isButtonActive
         ? `
           bg-yellow-400 
           text-black 
           border-yellow-500
-          shadow-[0_0_35px_rgba(255,215,0,0.9)]
+
+          shadow-[0_0_25px_rgba(255,215,0,0.8),0_0_60px_rgba(255,215,0,0.9)]
+          animate-pulse
+
           hover:bg-yellow-500
-          hover:shadow-[0_0_60px_rgba(255,215,0,1)]
-          hover:scale-105
+          hover:shadow-[0_0_40px_rgba(255,215,0,1),0_0_80px_rgba(255,215,0,1)]
+          hover:scale-110
+
           active:scale-95
         `
         : `
@@ -356,11 +382,18 @@ Learn how to configure a non-root public URL by running `npm run build`.
         `}
     `}
   >
-    {loading
-      ? "CLAIMING..."
-      : isButtonActive
-      ? "CLAIM ROYALTY"
-      : "CLAIM LOCKED"}
+    {/* Shine Layer */}
+    {isButtonActive && (
+      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shine_2s_linear_infinite]" />
+    )}
+
+    <span className="relative z-10">
+      {loading
+        ? "CLAIMING..."
+        : isButtonActive
+        ? "CLAIM ROYALTY"
+        : "CLAIM LOCKED"}
+    </span>
   </button>
             </div>
             <div className="text-center mt-4">
@@ -381,10 +414,8 @@ Learn how to configure a non-root public URL by running `npm run build`.
       </h4>
       <div className="bg-gray-700 bg-opacity-60 p-2 rounded-md text-center">
         <p className="text-white text-sm font-semibold">Total Users</p>
-        <span className="text-xl font-bold text-white">0</span>
-        {level === "BLOOM" && (
-        <span className="text-xl font-bold text-white">1</span>
-      )}
+        <span className="text-xl font-bold text-white">👥 {eligibleUsers[index] || 0}</span>
+       
       </div>
       <div className="mt-4">
         <p className="text-sm text-gray-300 text-center">Today</p>
