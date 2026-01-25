@@ -453,33 +453,4 @@ To create a production bundle, use `npm run build` or `yarn build`.
   );
 }
 
-
-const styles = {
-  container: {
-    textAlign: "center",
-    marginTop: "50px",
-    padding: "20px",
-    background: "#f0f9ff",
-    borderRadius: "15px",
-    boxShadow: "0 0 15px rgba(0,0,0,0.1)",
-    maxWidth: "500px",
-    margin: "50px auto"
-  },
-  title: {
-    color: "#2c3e50",
-    marginBottom: "30px"
-  },
-  button: {
-    padding: "15px 30px",
-    fontSize: "18px",
-    backgroundColor: "#27ae60",
-    color: "white",
-    border: "none",
-    borderRadius: "10px",
-    cursor: "pointer",
-    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
-    transition: "0.3s ease"
-  }
-};
-
 export default Flashout;
