@@ -31,37 +31,40 @@ const Flashout = () => {
   const getNextResetTime = () => {
     const now = new Date();
     const nextReset = new Date();
-    nextReset.setHours(8, 0, 0, 0);
+    nextReset.setHours(15, 42, 0, 0);
     if (now >= nextReset) nextReset.setDate(nextReset.getDate() + 1);
     return nextReset;
   };
 
   const getTodayResetTime = () => {
     const reset = new Date();
-    reset.setHours(8, 0, 0, 0);
+    reset.setHours(15, 42, 0, 0);
     return reset;
   };
 
+   // 🔹 TIMER + DAILY LOCK
   useEffect(() => {
-    const lastClaim = localStorage.getItem('lastClaimTime');
-    const now = new Date();
-    const resetTime = getTodayResetTime();
-
-    if (!lastClaim || new Date(lastClaim) < resetTime) {
-      setIsButtonActive(true);
-    }
-
     const updateTimer = () => {
       const now = new Date();
-      const diff = getNextResetTime() - now;
+      const nextReset = getNextResetTime();
+      const diff = nextReset - now;
+
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((diff / (1000 * 60)) % 60);
       const seconds = Math.floor((diff / 1000) % 60);
+
       setTimeLeft({ hours, minutes, seconds });
 
-      const refreshed = localStorage.getItem('lastClaimTime');
-      if (!refreshed || new Date(refreshed) < getTodayResetTime()) {
-        setIsButtonActive(true);
+      const lastClaim = localStorage.getItem("lastClaimTime");
+      const todayReset = getTodayResetTime();
+
+      if (!lastClaim) {
+        if (now >= todayReset) setIsButtonActive(true);
+        else setIsButtonActive(false);
+      } else {
+        const last = new Date(lastClaim);
+        if (last < todayReset && now >= todayReset) setIsButtonActive(true);
+        else setIsButtonActive(false);
       }
     };
 
@@ -69,6 +72,7 @@ const Flashout = () => {
     const interval = setInterval(updateTimer, 1000);
     return () => clearInterval(interval);
   }, []);
+
 
 
 
@@ -82,7 +86,7 @@ useEffect(() => {
       const currentDay = await contract.getCurRoyaltyDay();
 
       const updated = await Promise.all(
-        Array.from({ length: 8 }, async (_, i) => {
+        Array.from({ length: 10 }, async (_, i) => {
           const level = 0 + i;
           const today = await contract.royalty(currentDay, level);
           const yesterday = await contract.royalty(currentDay - 1n, level);
@@ -105,32 +109,31 @@ useEffect(() => {
 
 
 
-  // 👉 Smart contract call
+  // 🔹 CLAIM (din me sirf 1 baar)
   const handleClaimRoyalty = async () => {
     try {
-      if (!window.ethereum) return alert('Please install MetaMask!');
+      if (!window.ethereum) return alert("Please install MetaMask!");
       setLoading(true);
 
       const provider = new BrowserProvider(window.ethereum);
-      const signer = provider.getSigner();
-      const contract = new formatEther.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+      const signer = await provider.getSigner();
+      const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-      const royaltyId = 0; // 👈 Change as needed
+      const royaltyId = 0; // jis level ka claim chahiye
       const tx = await contract.claimRoyalty(royaltyId);
       await tx.wait();
 
-      localStorage.setItem('lastClaimTime', new Date().toISOString());
+      localStorage.setItem("lastClaimTime", new Date().toISOString());
       setIsButtonActive(false);
-      alert('Royalty claimed successfully!');
+
+      alert("Royalty claimed successfully!");
     } catch (err) {
       console.error(err);
-      alert('Transaction failed!');
+      alert("Not eligible / Missed day / Failed");
     } finally {
       setLoading(false);
     }
   };
-
-
 
 
  
@@ -319,7 +322,54 @@ Learn how to configure a non-root public URL by running `npm run build`.
             <div className="text-center mt-4">
                 
             </div>
+
         </div>
+
+
+
+        <div className="bg-gradient-to-r from-yellow-500 via-green-500 to-blue-500 rounded-lg p-6 shadow-lg mb-8">
+            <div className="flex justify-center">
+                 <button
+    disabled={!isButtonActive || loading}
+    onClick={handleClaimRoyalty}
+    className={`
+      px-28 py-7 rounded-3xl font-extrabold text-3xl tracking-wide
+      transition-all duration-300 border-4
+
+      ${isButtonActive
+        ? `
+          bg-yellow-400 
+          text-black 
+          border-yellow-500
+          shadow-[0_0_35px_rgba(255,215,0,0.9)]
+          hover:bg-yellow-500
+          hover:shadow-[0_0_60px_rgba(255,215,0,1)]
+          hover:scale-105
+          active:scale-95
+        `
+        : `
+          bg-gray-300 
+          text-gray-600
+          border-gray-400
+          cursor-not-allowed
+          shadow-none
+        `}
+    `}
+  >
+    {loading
+      ? "CLAIMING..."
+      : isButtonActive
+      ? "CLAIM ROYALTY"
+      : "CLAIM LOCKED"}
+  </button>
+            </div>
+            <div className="text-center mt-4">
+                
+            </div>
+
+        </div>
+
+        
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
   {levelNames.map((level, index) => (
     <div
