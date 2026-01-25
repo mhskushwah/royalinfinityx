@@ -3,6 +3,51 @@ import { BrowserProvider, Contract, formatEther } from "ethers";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../blockchain/config";
 
 
+const autoDailyRoyaltySync = async () => {
+  try {
+    if (!window.ethereum) return;
+
+    const today = new Date().toDateString();
+    const lastSync = localStorage.getItem("lastRoyaltySync");
+
+    // Agar aaj already sync ho chuka → kuch mat karo
+    if (lastSync === today) {
+      console.log("Royalty already synced today");
+      return;
+    }
+
+    const provider = new BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
+    const currentDay = await contract.getCurRoyaltyDay();
+
+    console.log("Starting daily royalty sync...");
+
+    // 🔥 Sab 10 levels ko ek-ek karke sync karo
+    for (let i = 0; i < 10; i++) {
+      try {
+        const moved = await contract.roayltyUsersMoved(i, currentDay);
+
+        if (!moved) {
+          const tx = await contract.movePendingRoayltyUsers(i);
+          await tx.wait();
+          console.log(`Level ${i} synced`);
+        }
+      } catch (e) {
+        console.log(`Level ${i} skip`);
+      }
+    }
+
+    // Mark karo ki aaj sync ho chuka
+    localStorage.setItem("lastRoyaltySync", today);
+
+  } catch (err) {
+    console.error("Auto sync error:", err);
+  }
+};
+
+
 const levelNames = [
   "SMART",
   "EXPERT",
@@ -125,6 +170,7 @@ useEffect(() => {
       console.error("Error fetching royalty:", err);
     }
   };
+  autoDailyRoyaltySync();   // 🔥 DAILY AUTO SYNC
 
   fetchAllRoyalty();
 }, []);
