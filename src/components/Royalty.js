@@ -72,10 +72,6 @@ const Flashout = () => {
   );
   const [eligibleUsers, setEligibleUsers] = useState([]);
 
-
-
-
-  // Time reset logic for 8:00 AM daily
   const getNextResetTime = () => {
     const now = new Date();
     const nextReset = new Date();

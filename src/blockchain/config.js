@@ -2,8 +2,8 @@
 import { ethers } from 'ethers';
 
 export const RPC_URL = "https://opbnb-mainnet-rpc.bnbchain.org";  // ✅ Tumhara testnet RPC URL
-export const CONTRACT_ADDRESS = "0x9877170c170d16f6eEc611eC16cD492a625D8fb5";           // ✅ Tumhara Smart Contract Address
-export const CONTRACT_ABI =[
+export const CONTRACT_ADDRESS = "0x2ee0735A80C2c80620b441249F893350Aaa0B715";           // ✅ Tumhara Smart Contract Address
+export const CONTRACT_ABI = [
     {
       "inputs": [
         {
@@ -32,7 +32,8 @@ export const CONTRACT_ABI =[
     },
     {
       "stateMutability": "payable",
-      "type": "fallback"
+      "type": "fallback",
+      "payable": true
     },
     {
       "inputs": [
@@ -61,7 +62,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -80,7 +82,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -99,7 +102,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -153,7 +157,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -197,7 +202,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -216,7 +222,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -235,7 +242,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -254,7 +262,42 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "migrated",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "migratedUsers",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -267,7 +310,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -296,7 +340,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -320,7 +365,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -344,7 +390,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -368,7 +415,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -387,7 +435,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -406,7 +455,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -430,7 +480,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -443,7 +494,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -472,7 +524,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -485,7 +538,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -509,7 +563,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -568,7 +623,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -592,11 +648,13 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "stateMutability": "payable",
-      "type": "receive"
+      "type": "receive",
+      "payable": true
     },
     {
       "inputs": [
@@ -614,7 +672,8 @@ export const CONTRACT_ABI =[
       "name": "register",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [
@@ -632,7 +691,8 @@ export const CONTRACT_ABI =[
       "name": "upgrade",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [
@@ -643,6 +703,236 @@ export const CONTRACT_ABI =[
         }
       ],
       "name": "claimRoyalty",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id_",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "referrer",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "upline",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "start",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "level",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "directTeam",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalMatrixTeam",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalDeposit",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[11]",
+          "name": "directTeamRanks",
+          "type": "uint256[11]"
+        },
+        {
+          "internalType": "bool[10]",
+          "name": "royaltyActive",
+          "type": "bool[10]"
+        }
+      ],
+      "name": "migrateUserBasic",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "userId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalIncome",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "royaltyIncome",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "referralIncome",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "upgradingIncome",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lostIncome",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "directReferralIncome",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[11]",
+          "name": "levelIncome",
+          "type": "uint256[11]"
+        }
+      ],
+      "name": "migrateIncomeInfo",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "userId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id_",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "layer",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "time",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "isLost",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "incomeType",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "level",
+          "type": "uint256"
+        }
+      ],
+      "name": "addIncomeHistory",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "userId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "day",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "setUserDayIncome",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "userId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lastDay",
+          "type": "uint256"
+        }
+      ],
+      "name": "setRoyaltyState",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "day",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "userId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "taken",
+          "type": "bool"
+        }
+      ],
+      "name": "setRoyaltyTaken",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "finishMigration",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -669,7 +959,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -754,13 +1045,14 @@ export const CONTRACT_ABI =[
               "type": "bool[10]"
             }
           ],
-          "internalType": "struct Royal_infinityx.User[]",
+          "internalType": "struct Royal_infinityx1.User[]",
           "name": "",
           "type": "tuple[]"
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -815,13 +1107,14 @@ export const CONTRACT_ABI =[
               "type": "uint256"
             }
           ],
-          "internalType": "struct Royal_infinityx.Income[]",
+          "internalType": "struct Royal_infinityx1.Income[]",
           "name": "",
           "type": "tuple[]"
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -840,7 +1133,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -920,13 +1214,14 @@ export const CONTRACT_ABI =[
               "type": "bool[10]"
             }
           ],
-          "internalType": "struct Royal_infinityx.User[]",
+          "internalType": "struct Royal_infinityx1.User[]",
           "name": "",
           "type": "tuple[]"
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -944,7 +1239,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -957,7 +1253,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -970,7 +1267,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -989,7 +1287,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -1008,7 +1307,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -1027,7 +1327,8 @@ export const CONTRACT_ABI =[
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -1038,29 +1339,6 @@ export const CONTRACT_ABI =[
         }
       ],
       "name": "movePendingRoayltyUsers",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_new",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_type",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_num",
-          "type": "uint256"
-        }
-      ],
-      "name": "setAddr",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
