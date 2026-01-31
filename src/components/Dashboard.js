@@ -1043,10 +1043,10 @@ const finalAmount = totalAmount + totalAdminCharge;
               <h4 className="font-bold">ROYAL INFINITYX Contract opbnb.bscscan</h4>
               <a
                 className="text-yellow-400 underline"
-                href="https://opbnb.bscscan.com/address/0x9877170c170d16f6eEc611eC16cD492a625D8fb5"
+                href="https://opbnb.bscscan.com/address/0x2ee0735A80C2c80620b441249F893350Aaa0B715"
                 target="_blank"
               >
-                (0x9877170c.................17a625D8fb5)
+                (0x2ee0735A80.................893350Aaa0B715)
               </a>
             </div>
 
