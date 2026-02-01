@@ -82,7 +82,7 @@ const Flashout = () => {
 
   const getTodayResetTime = () => {
     const reset = new Date();
-    reset.setHours(15, 42, 0, 0);
+    reset.setHours(23, 48, 23, 0);
     return reset;
   };
 
@@ -415,11 +415,11 @@ Learn how to configure a non-root public URL by running `npm run build`.
        <div className="mt-4">
         <p className="text-sm text-gray-300 text-center">Today</p>
         <p className="text-lg font-bold text-center text-yellow-400">
-          {parseFloat(royalties[index]?.today || "0").toFixed(4)} BNB
+          {parseFloat(royalties[index]?.today || "0").toFixed(7)} BNB
         </p>
         <p className="text-sm text-gray-300 mt-2 text-center">Previous Day</p>
         <p className="text-lg font-bold text-center text-yellow-400">
-          {parseFloat(royalties[index]?.yesterday || "0").toFixed(4)} BNB
+          {parseFloat(royalties[index]?.yesterday || "0").toFixed(7)} BNB
         </p>
       </div>
 
