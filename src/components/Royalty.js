@@ -75,7 +75,7 @@ const Flashout = () => {
   const getNextResetTime = () => {
     const now = new Date();
     const nextReset = new Date();
-    nextReset.setHours(15, 42, 0, 0);
+    nextReset.setHours(12, 23, 0, 0);
     if (now >= nextReset) nextReset.setDate(nextReset.getDate() + 1);
     return nextReset;
   };

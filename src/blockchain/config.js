@@ -2,7 +2,7 @@
 import { ethers } from 'ethers';
 
 export const RPC_URL = "https://opbnb-mainnet-rpc.bnbchain.org";  // ✅ Tumhara testnet RPC URL
-export const CONTRACT_ADDRESS = "0x2ee0735A80C2c80620b441249F893350Aaa0B715";           // ✅ Tumhara Smart Contract Address
+export const CONTRACT_ADDRESS = "0x4e579F97AFa4524368A396CC4ceAb8dCB9329cAd";           // ✅ Tumhara Smart Contract Address
 export const CONTRACT_ABI = [
     {
       "inputs": [
@@ -267,40 +267,6 @@ export const CONTRACT_ABI = [
     },
     {
       "inputs": [],
-      "name": "migrated",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "migratedUsers",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
-    },
-    {
-      "inputs": [],
       "name": "owner",
       "outputs": [
         {
@@ -337,6 +303,20 @@ export const CONTRACT_ABI = [
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "royal",
+      "outputs": [
+        {
+          "internalType": "contract IRoyal_infinityx",
+          "name": "",
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -710,236 +690,6 @@ export const CONTRACT_ABI = [
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "account",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "id_",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "referrer",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "upline",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "start",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "level",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "directTeam",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "totalMatrixTeam",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "totalDeposit",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256[11]",
-          "name": "directTeamRanks",
-          "type": "uint256[11]"
-        },
-        {
-          "internalType": "bool[10]",
-          "name": "royaltyActive",
-          "type": "bool[10]"
-        }
-      ],
-      "name": "migrateUserBasic",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "userId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "totalIncome",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "royaltyIncome",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "referralIncome",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "upgradingIncome",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "lostIncome",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "directReferralIncome",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256[11]",
-          "name": "levelIncome",
-          "type": "uint256[11]"
-        }
-      ],
-      "name": "migrateIncomeInfo",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "userId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "id_",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "layer",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "time",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bool",
-          "name": "isLost",
-          "type": "bool"
-        },
-        {
-          "internalType": "uint256",
-          "name": "incomeType",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "level",
-          "type": "uint256"
-        }
-      ],
-      "name": "addIncomeHistory",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "userId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "day",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "setUserDayIncome",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "userId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "lastDay",
-          "type": "uint256"
-        }
-      ],
-      "name": "setRoyaltyState",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "day",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "userId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bool",
-          "name": "taken",
-          "type": "bool"
-        }
-      ],
-      "name": "setRoyaltyTaken",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "finishMigration",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256",
           "name": "_user",
           "type": "uint256"
@@ -1045,7 +795,7 @@ export const CONTRACT_ABI = [
               "type": "bool[10]"
             }
           ],
-          "internalType": "struct Royal_infinityx1.User[]",
+          "internalType": "struct Royal_infinityx2.User[]",
           "name": "",
           "type": "tuple[]"
         }
@@ -1107,7 +857,7 @@ export const CONTRACT_ABI = [
               "type": "uint256"
             }
           ],
-          "internalType": "struct Royal_infinityx1.Income[]",
+          "internalType": "struct Royal_infinityx2.Income[]",
           "name": "",
           "type": "tuple[]"
         }
@@ -1214,7 +964,7 @@ export const CONTRACT_ABI = [
               "type": "bool[10]"
             }
           ],
-          "internalType": "struct Royal_infinityx1.User[]",
+          "internalType": "struct Royal_infinityx2.User[]",
           "name": "",
           "type": "tuple[]"
         }
@@ -1309,6 +1059,24 @@ export const CONTRACT_ABI = [
       "stateMutability": "view",
       "type": "function",
       "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_startIndex",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_endIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "stackData",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
