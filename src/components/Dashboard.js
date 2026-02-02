@@ -869,7 +869,7 @@ const finalAmount = totalAmount + totalAdminCharge;
                     </svg>
                   </a>
                   <a
-                    href="https://www.facebook.com/vibechainofficial"
+                    href="https://www.facebook.com/royalinfinityxofficial"
                     target="_blank"
                     className="cursor-pointer"
                   >
@@ -937,7 +937,7 @@ const finalAmount = totalAmount + totalAdminCharge;
                     </svg>
                   </a>
                   <a
-                    href="https://x.com/vibechainoffical"
+                    href="https://x.com/royalinfinityxofficial"
                     target="_blank"
                     className="cursor-pointer"
                   >
@@ -958,7 +958,7 @@ const finalAmount = totalAmount + totalAdminCharge;
                     </svg>
                   </a>
                   <a
-                    href="https://www.instagram.com/vibechain"
+                    href="https://www.instagram.com/royalinfinityx"
                     target="_blank"
                     className="cursor-pointer"
                   >
@@ -1016,7 +1016,7 @@ const finalAmount = totalAmount + totalAdminCharge;
                     </svg>
                   </a>
                   <a
-                    href="https://youtube.com/@vibechainofficial"
+                    href="https://youtube.com/@royalinfinityxofficial"
                     target="_blank"
                     className="cursor-pointer"
                   >

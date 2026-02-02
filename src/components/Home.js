@@ -290,15 +290,15 @@ Learn how to configure a non-root public URL by running `npm run build`.
             <p>© 2026 ROYAL INFINITYX. All Rights Reserved.</p>
             <p className="mt-2">
               Follow us on
-              <a href="https://getrise.pro/#" className="text-blue-500 ml-2">
+              <a href="https://royalinfinityx.vercel.app/#" className="text-blue-500 ml-2">
                 Twitter
               </a>
               ,
-              <a href="https://getrise.pro/#" className="text-blue-500 ml-2">
+              <a href="https://royalinfinityx.vercel.app/#" className="text-blue-500 ml-2">
                 Instagram
               </a>
               , and
-              <a href="https://getrise.pro/#" className="text-blue-500 ml-2">
+              <a href="https://royalinfinityx.vercel.app/#" className="text-blue-500 ml-2">
                 Facebook
               </a>
               .
