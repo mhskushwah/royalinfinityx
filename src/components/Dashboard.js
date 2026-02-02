@@ -836,7 +836,7 @@ const finalAmount = totalAmount + totalAdminCharge;
               <div className="w-full">
                 <div className="w-full flex justify-between">
                   <a
-                    href="https://t.me/vibechainoffcial"
+                    href="https://t.me/royalinfinityxofficial"
                     target="_blank"
                     className="cursor-pointer"
                   >
