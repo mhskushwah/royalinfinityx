@@ -137,7 +137,7 @@ const RecentIncome = () => {
       case 0: return "Direct Income";
       case 1: return "Referral Income";
       case 2: return "Level Upgrade";
-      default: return "Direct Income";
+      default: return "Royalty Income";
     }
   };
 
@@ -390,7 +390,7 @@ Learn how to configure a non-root public URL by running `npm run build`.
                   <td className="border px-4 py-2">{entry.from}</td>
                   <td className="border px-4 py-2">{entry.amount}</td>
                   <td className="border px-4 py-2">{getIncomeType(entry.incomeType)}</td>
-                  <td className="border px-4 py-2">{LEVEL_NAMES1[entry.level] || "ROYALTY"}</td>
+                  <td className="border px-4 py-2">{LEVEL_NAMES1[entry.level] || "UNKNOWN"}</td>
                   <td className="border px-4 py-2">{entry.layer}</td>
                   <td className="border px-4 py-2">{entry.isLost}</td>
                   <td className="border px-4 py-2">{entry.timestamp}</td>

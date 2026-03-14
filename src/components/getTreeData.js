@@ -2,19 +2,32 @@ import { getContract } from "../blockchain/config";
 
 const safeStringify = (obj, space = 2) => {
   const seen = new WeakSet();
-  return JSON.stringify(
-    obj,
-    function (key, value) {
-      if (typeof value === "object" && value !== null) {
-        if (seen.has(value)) {
-          return "[Circular]";
-        }
-        seen.add(value);
+  return JSON.stringify(obj, function (key, value) {
+    if (typeof value === "object" && value !== null) {
+      if (seen.has(value)) {
+        return "[Circular]";
       }
-      return value;
-    },
-    space
-  );
+      seen.add(value);
+    }
+    return value;
+  }, space);
+};
+
+// check if target user is downline
+const isDownline = async (contract, currentUserId, targetUserId) => {
+  if (currentUserId === targetUserId) return true;
+
+  let user = await contract.userInfo(targetUserId);
+
+  while (Number(user.referrer) !== 0) {
+    if (Number(user.referrer) === currentUserId) {
+      return true;
+    }
+
+    user = await contract.userInfo(Number(user.referrer));
+  }
+
+  return false;
 };
 
 export const fetchUserTree = async (
@@ -25,44 +38,37 @@ export const fetchUserTree = async (
   batchSize = 1000
 ) => {
   try {
+
     if (typeof userId !== "number" || isNaN(userId) || userId <= 0) {
-      console.warn("Invalid userId provided to fetchUserTree:", userId);
+      alert("Invalid user ID.");
       return null;
     }
 
     const contract = await getContract();
 
-    // 🔹 current logged in wallet
+    // current wallet
     const accounts = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
+
     const wallet = accounts[0];
 
-    // 🔹 current user id
-    const currentUserId = Number(await contract.getUserIdByAddress(wallet));
+    // get current user id from contract
+    const currentUser = await contract.users(wallet);
+    const currentUserId = Number(currentUser.id);
 
-    // 🔹 check requested user
-    const user = await contract.userInfo(userId);
+    // permission check
+    const allowed = await isDownline(contract, currentUserId, userId);
 
-    if (!user || Number(user.id) === 0) {
-      console.warn(`User ID ${userId} not found.`);
+    if (!allowed) {
+      alert("❌ You can only view your own or your downline tree.");
       return null;
     }
 
-    // 🔹 authorization check (allow only self or downline)
-    let checkUser = user;
-    let isAllowed = Number(userId) === currentUserId;
+    const user = await contract.userInfo(userId);
 
-    while (!isAllowed && Number(checkUser.referrer) !== 0) {
-      if (Number(checkUser.referrer) === currentUserId) {
-        isAllowed = true;
-        break;
-      }
-      checkUser = await contract.userInfo(Number(checkUser.referrer));
-    }
-
-    if (!isAllowed) {
-      console.warn("Unauthorized tree access attempt");
+    if (!user || Number(user.id) === 0) {
+      alert("User not found.");
       return null;
     }
 
@@ -113,7 +119,6 @@ export const fetchUserTree = async (
         currentIndex += batchSize;
       }
 
-      // binary layout (2 children)
       const maxChildren = 2;
 
       for (let i = 0; i < maxChildren; i++) {
@@ -131,11 +136,10 @@ export const fetchUserTree = async (
     }
 
     return node;
+
   } catch (error) {
-    console.error(
-      `Error in fetchUserTree for ID ${userId}:`,
-      safeStringify(error)
-    );
+    console.error(`Error in fetchUserTree for ID ${userId}:`, safeStringify(error));
+    alert("Error loading tree.");
     return null;
   }
 };

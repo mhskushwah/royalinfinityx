@@ -21,7 +21,7 @@ const DayIncomeList = ({ userId }) => {
 
   return (
     <div className="p-4 bg-gray-900 text-white rounded-lg shadow-lg mt-6">
-      <h2 className="text-xl font-bold mb-4 text-center text-lime-400">🗓 Last 7 Days Income</h2>
+      <h2 className="text-xl font-bold mb-4 text-center text-lime-400">🗓 Last 3 Days Income</h2>
       {loading ? (
         <p className="text-center">Loading...</p>
       ) : (
