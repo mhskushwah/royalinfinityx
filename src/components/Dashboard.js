@@ -719,7 +719,7 @@ const finalAmount = totalAmount + totalAdminCharge;
         { title: "Referral Income (15%) ", value: directReferralIncome, icon: "bnb.png", showBNB: true, isBNB: true },
         { title: "Direct Income (85%)", value: referralIncome, icon: "bnb.png", showBNB: true, isBNB: true },
         { title: "Level Upgrade Income", value: upgradingIncome, icon: "bnb.png", showBNB: true, isBNB: true },
-        { title: "Lost Income", value: lostIncome, icon: "bnb.png", showBNB: true, isBNB: true },
+      //  { title: "Lost Income", value: lostIncome, icon: "bnb.png", showBNB: true, isBNB: true },
         { title: "Royalty Income", value: royaltyIncome, icon: "bnb.png", showBNB: true, isBNB: true },
 
 

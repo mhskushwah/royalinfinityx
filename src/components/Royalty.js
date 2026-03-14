@@ -71,6 +71,7 @@ const Flashout = () => {
     new Array(10).fill({ today: "0", yesterday: "0" })
   );
   const [eligibleUsers, setEligibleUsers] = useState([]);
+  const [currentUserLevel, setCurrentUserLevel] = useState(null);
 
   const getNextResetTime = () => {
     const now = new Date();
@@ -128,7 +129,8 @@ useEffect(() => {
       const provider = new BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-
+      const user = await contract.userInfo(await signer.getAddress());
+      setCurrentUserLevel(Number(user.level));
       const currentDay = await contract.getCurRoyaltyDay();
 
       const updated = [];
@@ -424,31 +426,45 @@ Learn how to configure a non-root public URL by running `npm run build`.
       </div>
 
       {/* CLAIM BUTTON PER LEVEL */}
-      <div className="flex justify-center mt-2">
-        <button
-          disabled={loading || eligibleUsers[index] === 0}
-          onClick={() => handleClaimRoyalty(index)}
-          className={`
-            px-6 py-3 rounded-xl font-bold text-lg transition-all duration-300
+      {index === currentUserLevel && (
+  <div className="flex justify-center mt-3">
+    <button
+      disabled={loading || eligibleUsers[index] === 0}
+      onClick={() => handleClaimRoyalty(index)}
+      className={`
+        w-full md:w-auto
+        px-5 py-3
+        rounded-xl
+        font-bold
+        text-white
+        text-base md:text-lg
+        transition-all duration-300
+        border
 
-            ${eligibleUsers[index] > 0
-              ? `
-                bg-yellow-400 text-black
-                hover:bg-yellow-500 hover:scale-105
-                shadow-[0_0_20px_rgba(255,215,0,0.8)]
-              `
-              : `
-                bg-gray-600 text-gray-400
-                cursor-not-allowed
-                shadow-none
-              `}
-          `}
-        >
+        ${
+          eligibleUsers[index] > 0
+            ? `
+              bg-blue-600
+              border-blue-600
+              hover:bg-blue-700
+              hover:scale-105
+              shadow-lg
+            `
+            : `
+              bg-gray-400
+              border-gray-500
+              text-gray-700
+              cursor-not-allowed
+            `
+        }
+      `}
+    >
           {eligibleUsers[index] > 0
             ? `💰 Claim `
             : `🔒 Locked`}
         </button>
       </div>
+      )}
 
     </div>
   ))}

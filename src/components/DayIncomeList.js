@@ -9,7 +9,7 @@ const DayIncomeList = ({ userId }) => {
   useEffect(() => {
     const loadIncomes = async () => {
       setLoading(true);
-      const data = await fetchUserDayIncome(userId, 7);
+      const data = await fetchUserDayIncome(userId, 3);
       setDayIncomes(data);
       setLoading(false);
     };

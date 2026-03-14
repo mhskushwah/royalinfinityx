@@ -384,13 +384,13 @@ Learn how to configure a non-root public URL by running `npm run build`.
                   key={index}
                   className={`${
                     index % 2 === 0 ? "bg-gray-900" : "bg-black"
-                  } hover:bg-yellow-500 hover:text-black transition duration-200`}
+                  } hover:bg-gray-700 hover:text-white hover:shadow-md transition duration-200 cursor-pointer`}
                 >
                   <td className="border px-4 py-2">{index+1}</td>
                   <td className="border px-4 py-2">{entry.from}</td>
                   <td className="border px-4 py-2">{entry.amount}</td>
                   <td className="border px-4 py-2">{getIncomeType(entry.incomeType)}</td>
-                  <td className="border px-4 py-2">{LEVEL_NAMES1[entry.level] || "UNKNOWN"}</td>
+                  <td className="border px-4 py-2">{LEVEL_NAMES1[entry.level] || "ROYALTY"}</td>
                   <td className="border px-4 py-2">{entry.layer}</td>
                   <td className="border px-4 py-2">{entry.isLost}</td>
                   <td className="border px-4 py-2">{entry.timestamp}</td>

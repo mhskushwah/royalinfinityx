@@ -2,18 +2,28 @@ import { getContract } from "../blockchain/config";
 
 const safeStringify = (obj, space = 2) => {
   const seen = new WeakSet();
-  return JSON.stringify(obj, function (key, value) {
-    if (typeof value === "object" && value !== null) {
-      if (seen.has(value)) {
-        return "[Circular]";
+  return JSON.stringify(
+    obj,
+    function (key, value) {
+      if (typeof value === "object" && value !== null) {
+        if (seen.has(value)) {
+          return "[Circular]";
+        }
+        seen.add(value);
       }
-      seen.add(value);
-    }
-    return value;
-  }, space);
+      return value;
+    },
+    space
+  );
 };
 
-export const fetchUserTree = async (userId, depth = 2, level = 0, startIndex = 0, batchSize = 1000) => {
+export const fetchUserTree = async (
+  userId,
+  depth = 2,
+  level = 0,
+  startIndex = 0,
+  batchSize = 1000
+) => {
   try {
     if (typeof userId !== "number" || isNaN(userId) || userId <= 0) {
       console.warn("Invalid userId provided to fetchUserTree:", userId);
@@ -21,10 +31,38 @@ export const fetchUserTree = async (userId, depth = 2, level = 0, startIndex = 0
     }
 
     const contract = await getContract();
+
+    // 🔹 current logged in wallet
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    const wallet = accounts[0];
+
+    // 🔹 current user id
+    const currentUserId = Number(await contract.getUserIdByAddress(wallet));
+
+    // 🔹 check requested user
     const user = await contract.userInfo(userId);
 
     if (!user || Number(user.id) === 0) {
-      console.warn(`User ID ${userId} not found or invalid.`);
+      console.warn(`User ID ${userId} not found.`);
+      return null;
+    }
+
+    // 🔹 authorization check (allow only self or downline)
+    let checkUser = user;
+    let isAllowed = Number(userId) === currentUserId;
+
+    while (!isAllowed && Number(checkUser.referrer) !== 0) {
+      if (Number(checkUser.referrer) === currentUserId) {
+        isAllowed = true;
+        break;
+      }
+      checkUser = await contract.userInfo(Number(checkUser.referrer));
+    }
+
+    if (!isAllowed) {
+      console.warn("Unauthorized tree access attempt");
       return null;
     }
 
@@ -48,12 +86,24 @@ export const fetchUserTree = async (userId, depth = 2, level = 0, startIndex = 0
       let childrenFetched = [];
 
       while (hasMore) {
-        const usersBatch = await contract.getMatrixUsers(userId, level, currentIndex, batchSize);
+        const usersBatch = await contract.getMatrixUsers(
+          userId,
+          level,
+          currentIndex,
+          batchSize
+        );
+
         if (usersBatch.length === 0) break;
 
         for (const u of usersBatch) {
           const childId = Number(u.id);
-          const childNode = await fetchUserTree(childId, depth - 1, level );
+
+          const childNode = await fetchUserTree(
+            childId,
+            depth - 1,
+            level + 1
+          );
+
           if (childNode) {
             childrenFetched.push(childNode);
           }
@@ -63,8 +113,9 @@ export const fetchUserTree = async (userId, depth = 2, level = 0, startIndex = 0
         currentIndex += batchSize;
       }
 
-      // Always fill 2 child positions (binary layout)
+      // binary layout (2 children)
       const maxChildren = 2;
+
       for (let i = 0; i < maxChildren; i++) {
         if (childrenFetched[i]) {
           node.children.push(childrenFetched[i]);
@@ -72,8 +123,8 @@ export const fetchUserTree = async (userId, depth = 2, level = 0, startIndex = 0
           node.children.push({
             name: "EMPTY",
             attributes: {},
-            level: level ,
-            children: [] // ❌ Don't add children under an empty node
+            level: level + 1,
+            children: [],
           });
         }
       }
@@ -81,8 +132,10 @@ export const fetchUserTree = async (userId, depth = 2, level = 0, startIndex = 0
 
     return node;
   } catch (error) {
-    console.error(`Error in fetchUserTree for ID ${userId}:`, safeStringify(error));
+    console.error(
+      `Error in fetchUserTree for ID ${userId}:`,
+      safeStringify(error)
+    );
     return null;
   }
 };
-
