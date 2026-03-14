@@ -424,7 +424,6 @@ Learn how to configure a non-root public URL by running `npm run build`.
       </div>
 
       {/* CLAIM BUTTON PER LEVEL */}
-      {index === level && (
   <div className="flex justify-center mt-3">
     <button
   onClick={() => handleClaimRoyalty(index)}
@@ -438,7 +437,7 @@ Learn how to configure a non-root public URL by running `npm run build`.
   💰 Claim Royalty
 </button>
       </div>
-      )}
+      
     
 
     </div>
