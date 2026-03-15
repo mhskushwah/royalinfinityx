@@ -201,10 +201,14 @@ useEffect(() => {
     await tx.wait();
 
     alert(`Royalty Level ${royaltyLevels[royaltyId]} claimed successfully!`);
+ // 🔥 Claim time save karo
+    localStorage.setItem("lastClaimTime", new Date().toISOString());
+
+    setIsButtonActive(false);
 
   } catch (err) {
     console.error(err);
-    alert("Not eligible / Missed day / Already claimed / Failed");
+    alert("Already claimed");
   } finally {
     setLoading(false);
   }
@@ -439,13 +443,19 @@ Learn how to configure a non-root public URL by running `npm run build`.
       {/* CLAIM BUTTON PER LEVEL */}
       {rank === royaltyLevels[index] && (
   <div className="flex justify-center mt-3">
-    <button
+   <button
+  disabled={!isButtonActive || loading}
   onClick={() => handleClaimRoyalty(index)}
   className="px-4 py-3 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105"
   style={{
-    background: "linear-gradient(90deg,#FFD700,#FFC300,#FFB700)",
+    background: !isButtonActive
+      ? "#666"
+      : "linear-gradient(90deg,#FFD700,#FFC300,#FFB700)",
     color: "#000",
-    boxShadow: "0 4px 12px rgba(255,215,0,0.6)"
+    boxShadow: !isButtonActive
+      ? "none"
+      : "0 4px 12px rgba(255,215,0,0.6)",
+    cursor: !isButtonActive ? "not-allowed" : "pointer"
   }}
 >
   💰 Claim Royalty
