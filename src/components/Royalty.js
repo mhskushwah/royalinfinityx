@@ -70,7 +70,12 @@ const Flashout = () => {
   const [royalties, setRoyalties] = useState(
     new Array(10).fill({ today: "0", yesterday: "0" })
   );
-  const [eligibleUsers, setEligibleUsers] = useState([]);
+  const [eligibleUsers, setEligibleUsers] = useState([]); 
+  const [rank, setRank] = useState(0);
+
+
+
+  
 
   const getNextResetTime = () => {
     const now = new Date();
@@ -119,7 +124,6 @@ const Flashout = () => {
 
 
 
-
 useEffect(() => {
   const fetchAllRoyalty = async () => {
     try {
@@ -128,7 +132,16 @@ useEffect(() => {
       const provider = new BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-      const user = await contract.userInfo(await signer.getAddress());
+
+      const address = await signer.getAddress();
+      // address se userId lo
+      const userId = await contract.id(address);
+      // user info lo
+      const user1 = await contract.userInfo(userId);
+      console.log("User ID:", Number(userId));
+      console.log("User Level:", Number(user1.level));
+      const rank = Number(user1.level);
+      setRank(rank);
       const currentDay = await contract.getCurRoyaltyDay();
 
       const updated = [];
@@ -148,7 +161,7 @@ useEffect(() => {
         const users = await contract.royaltyUsers(level);
 
         console.log(
-          `Level ${level}: Users=${users.toString()}, Today=${formatEther(today)}, Yesterday=${formatEther(yesterday)}`
+          `rank ${rank}, Level ${level}: Users=${users.toString()}, Today=${formatEther(today)}, Yesterday=${formatEther(yesterday)}`
         );
 
         updated.push({
@@ -424,6 +437,7 @@ Learn how to configure a non-root public URL by running `npm run build`.
       </div>
 
       {/* CLAIM BUTTON PER LEVEL */}
+      {rank === royaltyLevels[index] && (
   <div className="flex justify-center mt-3">
     <button
   onClick={() => handleClaimRoyalty(index)}
@@ -438,7 +452,7 @@ Learn how to configure a non-root public URL by running `npm run build`.
 </button>
       </div>
       
-    
+)}
 
     </div>
   ))}
