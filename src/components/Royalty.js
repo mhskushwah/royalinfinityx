@@ -443,19 +443,13 @@ Learn how to configure a non-root public URL by running `npm run build`.
       {/* CLAIM BUTTON PER LEVEL */}
       {rank === royaltyLevels[index] && (
   <div className="flex justify-center mt-3">
-   <button
-  disabled={!isButtonActive || loading}
+    <button
   onClick={() => handleClaimRoyalty(index)}
   className="px-4 py-3 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105"
   style={{
-    background: !isButtonActive
-      ? "#666"
-      : "linear-gradient(90deg,#FFD700,#FFC300,#FFB700)",
+    background: "linear-gradient(90deg,#FFD700,#FFC300,#FFB700)",
     color: "#000",
-    boxShadow: !isButtonActive
-      ? "none"
-      : "0 4px 12px rgba(255,215,0,0.6)",
-    cursor: !isButtonActive ? "not-allowed" : "pointer"
+    boxShadow: "0 4px 12px rgba(255,215,0,0.6)"
   }}
 >
   💰 Claim Royalty
