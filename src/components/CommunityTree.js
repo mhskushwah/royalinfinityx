@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { fetchUserTree } from "./getTreeData";
 import { BrowserProvider, ethers } from "ethers";
-import { CONTRACT_ADDRESS, CONTRACT_ABI } from "../blockchain/config";
+import { CONTRACT_ADDRESS, CONTRACT_ABI, getContract } from "../blockchain/config";
 
 const LEVEL_NAMES1 = [
   "UNKNOWN", "BASIC","SMART", "EXPERT", "WINNER", "PROVIDER", "CHAMPION", "DIRECTOR", "ICON", "DIAMOND", "ROYAL", "INFINITY"
@@ -16,6 +16,7 @@ const TreeNode = ({ node, selectedNode, setSelectedNode, userId, setInputId, han
   const hasChildren = node?.children?.length > 0;
   const leftChild = node?.children?.[0] || null;
   const rightChild = node?.children?.[1] || null;
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -164,6 +165,33 @@ const CommunityTree = () => {
   
 
 
+ const isDownline = async (rootId, targetId) => {
+  if (Number(rootId) === Number(targetId)) return true;
+
+  try {
+    const contract = await getContract();
+
+    let current = targetId;
+
+    // 🔥 referrer chain check (FAST METHOD)
+    while (current !== 0) {
+      if (Number(current) === Number(rootId)) {
+        return true; // ✅ allowed
+      }
+
+      const user = await contract.userInfo(current);
+      current = Number(user.referrer);
+    }
+
+    return false; // ❌ not allowed
+  } catch (error) {
+    console.error("Downline check error:", error);
+    return false;
+  }
+};
+
+
+
   useEffect(() => {
     async function connectWallet() {
         if (window.ethereum) {
@@ -241,33 +269,42 @@ const CommunityTree = () => {
     if (userId) handleSearch(null, userId);
   }, [userId]);
 
-  const handleSearch = async (e, manualId = null) => {
-    if (e?.preventDefault) e.preventDefault();
-    const parsedId = Number(manualId || inputId);
-    if (isNaN(parsedId) || parsedId <= 0) return;
+ const handleSearch = async (e, manualId = null) => {
+  if (e?.preventDefault) e.preventDefault();
 
-    try {
-      setLoading(true);
-      const data = await fetchUserTree(parsedId);
+  const parsedId = Number(manualId || inputId);
+  if (isNaN(parsedId) || parsedId <= 0) return;
 
-      setTreeData(data);
-      setSelectedNode(data);
+  try {
+    setLoading(true);
 
-      if (data) {
-        setHistory(prev => [...prev, currentTree].filter(Boolean));
-        setForwardStack([]);
-        setCurrentTree(data);
-        setSelectedNode(null);
-      }
-    } catch (error) {
-      console.error("Error fetching tree:", error);
-    } finally {
+    // 🔒 SECURITY CHECK
+    const allowed = await isDownline(userId, parsedId);
+
+    if (!allowed) {
+      alert("❌ Check Your Downline Only!");
       setLoading(false);
+      return;
     }
 
-   
+    const data = await fetchUserTree(parsedId);
 
-  };
+    setTreeData(data);
+    setSelectedNode(data);
+
+    if (data) {
+      setHistory(prev => [...prev, currentTree].filter(Boolean));
+      setForwardStack([]);
+      setCurrentTree(data);
+      setSelectedNode(null);
+    }
+
+  } catch (error) {
+    console.error("Error fetching tree:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
 
   const goBack = () => {
